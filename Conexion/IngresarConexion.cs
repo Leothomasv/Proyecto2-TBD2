@@ -37,7 +37,7 @@ namespace Proyecto2_TBD2.Conexion {
             DB2Connection connect = new DB2Connection(cn.ToString());
             try {
                 connect.Open();
-                MessageBox.Show("Conexion Exitosa!\n" + "Version servidor: " + connect.ServerVersion + " Base de datos: " + connect.Database.ToString());
+                //MessageBox.Show("Conexion Exitosa!\n" + "Version servidor: " + connect.ServerVersion + " Base de datos: " + connect.Database.ToString());
             } catch (DB2Exception error) {
                 MessageBox.Show("A ocurrido un error!\n" + error.Message);
             }
@@ -55,7 +55,7 @@ namespace Proyecto2_TBD2.Conexion {
             DB2Connection connect = new DB2Connection(cn.ToString());
             try {
                 connect.Open();
-                MessageBox.Show("Conexion Exitosa!\n" + "Version servidor: " + connect.ServerVersion + " Base de datos: " + connect.Database.ToString());
+               // MessageBox.Show("Conexion Exitosa!\n" + "Version servidor: " + connect.ServerVersion + " Base de datos: " + connect.Database.ToString());
                 CrearConexion(cn.Database);
                 obtenerTablas(connect);
                 

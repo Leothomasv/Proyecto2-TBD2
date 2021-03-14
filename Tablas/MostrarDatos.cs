@@ -26,13 +26,7 @@ namespace Proyecto2_TBD2.Tablas
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DB2CommandBuilder cmb = new DB2CommandBuilder(adapter);
-                adapter.Update(ds);
-                MessageBox.Show("Tabla Actualizada Correctamente");
-            }
-            catch {}
+            MostrarDatos_Load(sender, e);
         }
 
         private void MostrarDatos_Load(object sender, EventArgs e)
@@ -53,12 +47,40 @@ namespace Proyecto2_TBD2.Tablas
             }
             catch (DB2Exception ex) { }
             catch { }
-        }
+        } 
 
         private void button2_Click(object sender, EventArgs e)
         {
             LlenarTabla idt = new LlenarTabla(data_tablas, arbol_conexiones);
             idt.Show();
         }
+
+        public void LimpiarTabla_ConMensaje()
+        {
+            PantallaPrincipal pn1 = new PantallaPrincipal();
+            using (DB2Connection connection = pn1.obtenerConexion(arbol_conexiones.SelectedNode.Parent.Parent.Text))
+            {
+                try
+                {
+                    connection.Open();
+                    DB2Command cmd = new DB2Command("TRUNCATE TABLE " + arbol_conexiones.SelectedNode.Text + " IMMEDIATE;", connection);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Tabla ha sido vaciada correctamente");
+                }
+                catch (DB2Exception ex)
+                {
+                    MessageBox.Show("Ha ocurrido un error al limpiar tabla\n" + ex.Message);
+                }
+                connection.Close();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+           LimpiarTabla_ConMensaje();
+           MostrarDatos_Load(sender, e);
+        }
     }
 }
+
+

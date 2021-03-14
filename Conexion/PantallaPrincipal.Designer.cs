@@ -257,7 +257,7 @@
             // 
             this.eliminarTablaToolStripMenuItem.Name = "eliminarTablaToolStripMenuItem";
             this.eliminarTablaToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
-            this.eliminarTablaToolStripMenuItem.Text = "Eliminar Tabla";
+            this.eliminarTablaToolStripMenuItem.Text = "Limpiar Tabla";
             this.eliminarTablaToolStripMenuItem.Click += new System.EventHandler(this.eliminarTablaToolStripMenuItem_Click_1);
             // 
             // PantallaPrincipal

@@ -20,6 +20,11 @@ namespace Proyecto2_TBD2.Tablas
         List<string> tipoDato = new List<string>();
         //Lista para sacar el id
         List<string> id = new List<string>();
+        //Lista para datos que pueden ser null
+        List<string> nulo = new List<string>();
+
+
+
         public LlenarTabla(DataGridView data,TreeView arbol)
         {
             InitializeComponent();
@@ -50,7 +55,7 @@ namespace Proyecto2_TBD2.Tablas
             }
 
 
-            // For each row, print the values of each column.
+            // Agregando valores a la lista de los IDS
             foreach (DataRow row in tabla1.Rows)
             {
                 foreach (DataColumn column in tabla1.Columns)
@@ -79,7 +84,7 @@ namespace Proyecto2_TBD2.Tablas
                 connection.Close();
             }
            
-                // For each row, print the values of each column.
+                // Agregando tipos de datos a la lista 
                 foreach (DataRow row in tabla.Rows)
                 {
                     foreach (DataColumn column in tabla.Columns)
@@ -91,20 +96,37 @@ namespace Proyecto2_TBD2.Tablas
         }
 
 
-        //datos random
-        // int rand_num;
-        // string rand_palabra;
-    
-
-        public string GenerarRandomLetters()
+        //hace un truncate de la tabla, elimina todos los valores que se quiera
+        public void LimpiarTabla_SinMensaje()
         {
-            int length = 5;
+            PantallaPrincipal pn1 = new PantallaPrincipal();
+            using (DB2Connection connection = pn1.obtenerConexion(arbol_conexiones.SelectedNode.Parent.Parent.Text))
+            {
+                try
+                {
+                    connection.Open();
+                    DB2Command cmd = new DB2Command("TRUNCATE TABLE " + arbol_conexiones.SelectedNode.Text + " IMMEDIATE;", connection);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (DB2Exception ex)
+                { 
+                    MessageBox.Show("Ha ocurrido un error al limpiar tabla\n" + ex.Message);
+                }
+                connection.Close();
+            }
+        }
 
-            StringBuilder str_build = new StringBuilder();
-            Random random = new Random();
 
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+
+        public static string LetrasRandom()
+        {
+            int length = 8;
             char letter;
-
+            lock (syncLock)
+            {
+                StringBuilder str_build = new StringBuilder();
                 for (int i = 0; i < length; i++)
                 {
                     double flt = random.NextDouble();
@@ -112,14 +134,11 @@ namespace Proyecto2_TBD2.Tablas
                     letter = Convert.ToChar(shift + 65);
                     str_build.Append(letter);
                 }
-                //System.Console.WriteLine(str_build.ToString());
-            return str_build.ToString();
+                return str_build.ToString();
+            }
         }
 
-
-
-        private static readonly Random random = new Random();
-        private static readonly object syncLock = new object();
+   
         public static int RandomNumber(int min, int max)
         {
             lock (syncLock)
@@ -128,20 +147,37 @@ namespace Proyecto2_TBD2.Tablas
             }
         }
 
+        public static string TrueFalse()
+        {
+            var opciones = new List<string> { "true", "false" };
+            lock (syncLock)
+            {
+                int index = random.Next(opciones.Count);
+                var name = opciones[index];
+                opciones.RemoveAt(index);
+                return name;
+            }
+        }
 
-        
+
         private void confirmarButton_Click(object sender, EventArgs e){
+
+            LimpiarTabla_SinMensaje();
+            var watch = new System.Diagnostics.Stopwatch();
 
             string ids = "";
             string values = "";
 
             int cant = 0;
-            cant = Int32.Parse(cantReg.Text);
+            cant = Int32.Parse(cantReg.Text); //cantidad de registros que se desean ingresar
 
             string dat = tipoDato[0].ToString();
 
             string inte = "INTEGER ";
             string var = "VARCHAR ";
+            string boleano = "BOOLEAN ";
+            string dec = "DECIMAL ";
+            string dou = "DOUBLE ";
 
             string query ="";
 
@@ -150,10 +186,12 @@ namespace Proyecto2_TBD2.Tablas
 
             //este es para sacar el progress bar
            
-                if(entroUnaColumna == false  || entroMasColumna == false) {
+                if(entroUnaColumna == false  || entroMasColumna == false) { //cambiar por un for para ver si se pueden ingresar mas de una tabla
                     //este es si solo tengo un campo
+
                     if (id.Count == 1 && entroMasColumna == false) // si ya entro a la primera iteracion que tiene mas de una columna aqui no entra!!!!!
                     {
+                        watch.Start(); // tiempo inicia
                             if (entroUnaColumna == false)
                             {
                                 ids += id[0];
@@ -177,13 +215,13 @@ namespace Proyecto2_TBD2.Tablas
                                 }
                                 
                             }
-                            else  //VARCHAR
+                            else if(dat.Equals(var)) //VARCHAR
                             {
                                 string letra = "";
                                 for(int a =1; a <= cant; a++)
                                 {
                                     entroUnaColumna = true;
-                                    letra = GenerarRandomLetters();
+                                    letra = LetrasRandom();
                                     query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + "'" + letra + "'" + ");";
                                     ingresar(query);
                                     query = "";
@@ -194,87 +232,120 @@ namespace Proyecto2_TBD2.Tablas
                                     }
                                 }
                             }
+                            else if (dat.Equals(boleano))
+                            {
+                                string op = "";
+                                for (int a = 1; a <= cant; a++)
+                                {
+                                    entroUnaColumna = true;
+                                    op = TrueFalse();
+                                    query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + "'" + op + "'" + ");";
+                                    ingresar(query);
+                                    query = "";
+                                    op = "";
+                                    if (progressBar.Value < 100)
+                                    {
+                                        progressBar.Value++;
+                                    }
+                                }
+                            }
+                         watch.Stop(); //tiempo termina
                     }//fin if
 
-                //Listas para datos
-                List<string> datos = new List<string>();
-                string nombreDato = "";
-                int x = 0;
-                int y = 0;
+                    //Listas para datos
+                    List<string> datos = new List<string>();
+                    string nombreDato = "";
+                    int x = 0;
+                    int y = 0;
 
-                if (id.Count > 1)
+                    if (id.Count > 1)
                     {
-                        if (entroMasColumna == false)
-                        {
-                            for (int i = 0; i < id.Count; i++)
+                        watch.Start();
+                            if (entroMasColumna == false)
                             {
+                                for (int i = 0; i < id.Count; i++)
+                                {
 
-                                if (i < (id.Count - 1))//entra aqui si hay mas de un id
-                                {
-                                    ids += id[i] + ",";
-                                    datos.Add(tipoDato[i]);
-                                }
-                                else // entra aqui si solo queda un id
-                                {
-                                    ids += id[i];
-                                    datos.Add(tipoDato[i]);
+                                    if (i < (id.Count - 1))//entra aqui si hay mas de un id
+                                    {
+                                        ids += id[i] + ",";
+                                        datos.Add(tipoDato[i]);
+                                    }
+                                    else // entra aqui si solo queda un id
+                                    {
+                                        ids += id[i];
+                                        datos.Add(tipoDato[i]);
+                                    }
                                 }
                             }
-                        }
                              
-                    for (int u =1; u<= cant*tipoDato.Count; u++)
-                        {
-                            entroMasColumna = true;
-                            nombreDato = datos[x];
+                            for (int u =1; u<= cant*tipoDato.Count; u++)
+                                {
+                                    entroMasColumna = true;
+                                    nombreDato = datos[x]; // con esto se obtienen la cantidad de tipos de datos y asi poder hacer la comparacion en que ciclo va a ingresar por ejemplo varchar boolean int etc
 
-                            if (y < (tipoDato.Count - 1))
-                            {
-                                if (nombreDato.Equals(inte))//INTEGER
-                                {
-                                    values += "'" + RandomNumber(1, 10000).ToString() + "',";
-                                    x++;
-                                    y++;
-                                }else if(nombreDato.Equals(var))//VARCHAR
-                                {
-                                    values += "'" + GenerarRandomLetters() + "',";
-                                    x++; 
-                                    y++;
-                                }
-                            }
-                            else 
-                            {
-                                if (nombreDato.Equals(inte))//INTEGER
-                                {
-                                    values += "'" + RandomNumber(1, 10000).ToString() + "'";
-                                    x++;
-                                    y++;
-                                }
-                                else if (nombreDato.Equals(var))//VARCHAR
-                                {
-                                    values += "'" + GenerarRandomLetters() + "'";
-                                    x++;
-                                    y++;
-                                }
-                            }
-                            query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + values + ");";
-                            if (x == tipoDato.Count)
-                            {
-                                ingresar2(query);
-                                x = 0;
-                                y = 0;
-                                query = "";
-                                values="";
-                            }
-                        if (progressBar.Value < 100)
-                        {
-                            progressBar.Value++;
-                        }
-                    }
+                                    if (y < (tipoDato.Count - 1))
+                                    {
+                                        if (nombreDato.Equals(inte))//INTEGER
+                                        {
+                                            values += "'" + RandomNumber(1, 10000).ToString() + "',";
+                                            x++;
+                                            y++;
+                                        }else if(nombreDato.Equals(var))//VARCHAR
+                                        {
+                                            values += "'" + LetrasRandom() + "',";
+                                            x++; 
+                                            y++;
+                                        }else if (nombreDato.Equals(boleano)) //BOOLEAN
+                                        {
+                                            values += "'" + TrueFalse() + "',";
+                                            x++;
+                                            y++;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        if (nombreDato.Equals(inte))//INTEGER
+                                        {
+                                            values += "'" + RandomNumber(1, 10000).ToString() + "'";
+                                            x++;
+                                            y++;
+                                        }
+                                        else if (nombreDato.Equals(var))//VARCHAR
+                                        {
+                                            values += "'" + LetrasRandom() + "'";
+                                            x++;
+                                            y++;
+                                        }
+                                        else if (nombreDato.Equals(boleano)) //BOOLEAN
+                                        {
+                                            values += "'" + TrueFalse() + "'";
+                                            x++;
+                                            y++;
+                                        }
+                                    }
 
+                                    query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + values + ");";
+
+                                    if (x == tipoDato.Count) //una vez se hayan completado la cantidad de datos y el query este hecho se ingresa a la base de datos
+                                    {
+                                        ingresar2(query);
+                                        x = 0;
+                                        y = 0;
+                                        query = "";
+                                        values="";
+                                    }
+
+                                if (progressBar.Value < 100)
+                                {
+                                    progressBar.Value++;
+                                }
+                            }
+                       watch.Stop();
                     }
 
                 }
-            MessageBox.Show("Datos Ingresados Correctamente");
+            MessageBox.Show("Datos Ingresados Correctamente" +"\n"+ $"Execution Time: {watch.ElapsedMilliseconds} ms");
         }// fin de funcion click
 
 

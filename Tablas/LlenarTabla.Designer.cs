@@ -98,7 +98,7 @@ namespace Proyecto2_TBD2.Tablas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1454, 780);
+            this.ClientSize = new System.Drawing.Size(700, 420);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.cantReg);
