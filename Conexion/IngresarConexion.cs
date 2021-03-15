@@ -17,6 +17,7 @@ namespace Proyecto2_TBD2.Conexion {
         TreeView arbol;
         List<ContextMenuStrip> subMenus;
         TreeNode node1;
+
         
         public IngresarConexion(TreeView _arbol, List<ContextMenuStrip> _subMenus) {
             arbol = _arbol;
@@ -84,7 +85,7 @@ namespace Proyecto2_TBD2.Conexion {
 
             connect.Close();
         }
-
+        
         public void obtenerTablas(DB2Connection connect) {
             DB2Command cmd = new DB2Command("SELECT NAME FROM SYSIBM.SYSTABLES WHERE type = 'T' AND creator = '" + usuario.Text.ToUpper()+"';", connect);//OBTENER TABLAS DE LA BASE DE DATOS
             DB2DataReader bff = cmd.ExecuteReader();

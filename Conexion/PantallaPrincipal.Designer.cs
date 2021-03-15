@@ -45,7 +45,6 @@
             this.seleccionarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.subMenustablas = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.verDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eliminarTablaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tablas.SuspendLayout();
             this.panel_conexiones.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -65,7 +64,7 @@
             this.arbol_conexiones.Margin = new System.Windows.Forms.Padding(4);
             this.arbol_conexiones.Name = "arbol_conexiones";
             this.arbol_conexiones.SelectedImageIndex = 0;
-            this.arbol_conexiones.Size = new System.Drawing.Size(289, 708);
+            this.arbol_conexiones.Size = new System.Drawing.Size(289, 717);
             this.arbol_conexiones.TabIndex = 0;
             // 
             // imageList1
@@ -241,24 +240,16 @@
             // 
             this.subMenustablas.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.subMenustablas.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.verDatosToolStripMenuItem,
-            this.eliminarTablaToolStripMenuItem});
+            this.verDatosToolStripMenuItem});
             this.subMenustablas.Name = "subMenustablas";
-            this.subMenustablas.Size = new System.Drawing.Size(211, 80);
+            this.subMenustablas.Size = new System.Drawing.Size(143, 28);
             // 
             // verDatosToolStripMenuItem
             // 
             this.verDatosToolStripMenuItem.Name = "verDatosToolStripMenuItem";
-            this.verDatosToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.verDatosToolStripMenuItem.Size = new System.Drawing.Size(142, 24);
             this.verDatosToolStripMenuItem.Text = "Ver Datos";
             this.verDatosToolStripMenuItem.Click += new System.EventHandler(this.verDatosToolStripMenuItem_Click);
-            // 
-            // eliminarTablaToolStripMenuItem
-            // 
-            this.eliminarTablaToolStripMenuItem.Name = "eliminarTablaToolStripMenuItem";
-            this.eliminarTablaToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
-            this.eliminarTablaToolStripMenuItem.Text = "Limpiar Tabla";
-            this.eliminarTablaToolStripMenuItem.Click += new System.EventHandler(this.eliminarTablaToolStripMenuItem_Click_1);
             // 
             // PantallaPrincipal
             // 
@@ -296,7 +287,6 @@
         private System.Windows.Forms.ToolStripMenuItem eliminarConexionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propiedadesToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip subMenustablas;
-        private System.Windows.Forms.ToolStripMenuItem eliminarTablaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem verDatosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refrescarToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList2;

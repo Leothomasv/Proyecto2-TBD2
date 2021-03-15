@@ -35,6 +35,7 @@ namespace Proyecto2_TBD2.Tablas
             this.cantReg = new System.Windows.Forms.TextBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -52,7 +53,7 @@ namespace Proyecto2_TBD2.Tablas
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(1046, 584);
+            this.dataGridView1.Location = new System.Drawing.Point(1377, 619);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
@@ -80,7 +81,7 @@ namespace Proyecto2_TBD2.Tablas
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(1046, 406);
+            this.dataGridView2.Location = new System.Drawing.Point(1377, 441);
             this.dataGridView2.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersWidth = 51;
@@ -94,11 +95,21 @@ namespace Proyecto2_TBD2.Tablas
             this.progressBar.Size = new System.Drawing.Size(575, 23);
             this.progressBar.TabIndex = 8;
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(806, 70);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(262, 388);
+            this.listBox1.TabIndex = 9;
+            // 
             // LlenarTabla
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 420);
+            this.ClientSize = new System.Drawing.Size(1173, 541);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.cantReg);
@@ -122,5 +133,6 @@ namespace Proyecto2_TBD2.Tablas
         private System.Windows.Forms.TextBox cantReg;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

@@ -23,8 +23,6 @@ namespace Proyecto2_TBD2.Tablas
         //Lista para datos que pueden ser null
         List<string> nulo = new List<string>();
 
-
-
         public LlenarTabla(DataGridView data,TreeView arbol)
         {
             InitializeComponent();
@@ -159,7 +157,6 @@ namespace Proyecto2_TBD2.Tablas
             }
         }
 
-
         private void confirmarButton_Click(object sender, EventArgs e){
 
             LimpiarTabla_SinMensaje();
@@ -184,6 +181,7 @@ namespace Proyecto2_TBD2.Tablas
             bool entroUnaColumna = false;
             bool entroMasColumna = false;
 
+
             //este es para sacar el progress bar
            
                 if(entroUnaColumna == false  || entroMasColumna == false) { //cambiar por un for para ver si se pueden ingresar mas de una tabla
@@ -199,12 +197,14 @@ namespace Proyecto2_TBD2.Tablas
                             if (dat.Equals(inte)) //INTEGER
                             {
                                 string numero = "";
-                            
+                                listBox1.Items.Add("Iniciando llenado de tabla: " + arbol_conexiones.SelectedNode.Text);
+
                                 for (int l = 1; l <= cant; l++)
                                 {
                                     entroUnaColumna = true;
                                     numero = RandomNumber(1, 1000000).ToString();
                                     query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + "'" + numero + "'" + ");";
+                                    listBox1.Items.Add("Ingresando dato: " + l);
                                     ingresar(query);
                                     query = "";
                                     numero = "";
@@ -218,11 +218,13 @@ namespace Proyecto2_TBD2.Tablas
                             else if(dat.Equals(var)) //VARCHAR
                             {
                                 string letra = "";
-                                for(int a =1; a <= cant; a++)
+                                listBox1.Items.Add("Iniciando llenado de tabla: " + arbol_conexiones.SelectedNode.Text);
+                                for (int a =1; a <= cant; a++)
                                 {
                                     entroUnaColumna = true;
                                     letra = LetrasRandom();
                                     query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + "'" + letra + "'" + ");";
+                                    listBox1.Items.Add("Ingresando dato: " + a);
                                     ingresar(query);
                                     query = "";
                                     letra = "";
@@ -232,14 +234,16 @@ namespace Proyecto2_TBD2.Tablas
                                     }
                                 }
                             }
-                            else if (dat.Equals(boleano))
+                            else if (dat.Equals(boleano)) //BOOLEANO
                             {
                                 string op = "";
+                                listBox1.Items.Add("Iniciando llenado de tabla: " + arbol_conexiones.SelectedNode.Text);
                                 for (int a = 1; a <= cant; a++)
                                 {
                                     entroUnaColumna = true;
                                     op = TrueFalse();
                                     query = "INSERT INTO " + arbol_conexiones.SelectedNode.Text + " (" + ids + ") VALUES (" + "'" + op + "'" + ");";
+                                    listBox1.Items.Add("Ingresando dato: " + a);
                                     ingresar(query);
                                     query = "";
                                     op = "";
@@ -257,10 +261,13 @@ namespace Proyecto2_TBD2.Tablas
                     string nombreDato = "";
                     int x = 0;
                     int y = 0;
+                   int datoIngresado = 0;
+
 
                     if (id.Count > 1)
                     {
                         watch.Start();
+                        listBox1.Items.Add("Iniciando llenado de tabla: " + arbol_conexiones.SelectedNode.Text);
                             if (entroMasColumna == false)
                             {
                                 for (int i = 0; i < id.Count; i++)
@@ -329,7 +336,9 @@ namespace Proyecto2_TBD2.Tablas
 
                                     if (x == tipoDato.Count) //una vez se hayan completado la cantidad de datos y el query este hecho se ingresa a la base de datos
                                     {
+                                        datoIngresado++;
                                         ingresar2(query);
+                                        listBox1.Items.Add("Ingresando dato: " + datoIngresado);
                                         x = 0;
                                         y = 0;
                                         query = "";
@@ -345,7 +354,8 @@ namespace Proyecto2_TBD2.Tablas
                     }
 
                 }
-            MessageBox.Show("Datos Ingresados Correctamente" +"\n"+ $"Execution Time: {watch.ElapsedMilliseconds} ms");
+            listBox1.Items.Add("Proceso Terminado!!!");
+            MessageBox.Show("Datos Ingresados Correctamente" +"\n"+ $"Execution Time: {watch.ElapsedMilliseconds*0.001} segundos");
         }// fin de funcion click
 
 
